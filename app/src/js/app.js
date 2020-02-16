@@ -74,7 +74,7 @@ App = {
         }
         // If no injected web3 instance is detected, fall back to Ganache
         else {
-            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
         }
 
         App.getMetaskAccountID();
@@ -178,6 +178,7 @@ App = {
                 App.productNotes
             );
         }).then(function(result) {
+            console(result);
             $("#ftc-item").text(result);
             console.log('harvestItem',result);
         }).catch(function(err) {
@@ -329,7 +330,7 @@ App = {
         App.contracts.SupplyChain.deployed().then(function(instance) {
         var events = instance.allEvents(function(err, log){
           if (!err)
-            $("#ftc-events").append('<li>' + log.event + ' - ' + log.transactionHash + '</li>');
+            $("#ftc-events").append('<li>' + log.event + ' - <a target="_blank" href="https://rinkeby.etherscan.io/tx/' + log.transactionHash + '">'+ log.transactionHash +'</a></li>');
         });
         }).catch(function(err) {
           console.log(err.message);
