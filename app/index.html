@@ -8,9 +8,10 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <style type="text/css">
         .button-div {
-                margin-top: 10px;
+            margin-top: 10px;
         }
         .form-group {
             padding: 0px !important;
@@ -24,7 +25,8 @@
     <div class="container">
         <h1 style="text-align: center;">Agricultural Public Trade Platform</h1>
         <hr>
-        <p style="text-align: center;">Prove the authenticity of Folkrice using the Ethereum blockchain.</p>
+        <p style="text-align: center;">Prove the authenticity of Folkrice using the <span id="ftc-contract">Ethereum blockchain</span>.</p>
+        <div ></div>
         <code id="ftc-item"></code>
         <div class="row">
             <div class="col-md-6 col-sm-12">   
@@ -65,10 +67,10 @@
                         <br>
                         <input type="text" id="originFarmLongitude" name="originFarmLongitude" value="144.341490"><br>
                         <br>
-                        <button class="btn btn-primary btn-sm btn-harvest" id="button" type="button" data-id="1">Harvest</button>
-                        <button class="btn btn-primary btn-sm btn-process" id="button" type="button" data-id="2">Process</button>
-                        <button class="btn btn-primary btn-sm btn-pack" id="button" type="button" data-id="3">Pack</button>
-                        <button class="btn btn-primary btn-sm btn-forsale" id="button" type="button" data-id="4">ForSale</button>
+                         <button class="btn btn-primary btn-harvest" id="button" type="button" data-id="1"><i class="fas fa-cut"></i> Harvest</button>
+                    <button class="btn btn-primary btn-process" id="button" type="button" data-id="2"><i class="fas fa-sync"></i> Process</button>
+                    <button class="btn btn-primary btn-pack" id="button" type="button" data-id="3"><i class="fas fa-boxes"></i> Pack</button>
+                    <button class="btn btn-primary btn-forsale" id="button" type="button" data-id="4"><i class="fas fa-money-bill"></i> ForSale</button>
                     </div>
                     <div class=form-break></div>
                     <h2>Product Details</h2>
@@ -93,10 +95,10 @@
                         <input type="text" id="consumerID" name="consumerID" value="0x5d777e9127b28fb119e81a6304278a0a21bef1c4"
                             size="50"><br>
                         <br>
-                        <button class="btn btn-primary btn-sm btn-buy" id="button" type="button" data-id="5">Buy</button>
-                        <button class="btn btn-primary btn-sm btn-ship" id="button" type="button" data-id="6">Ship</button>
-                        <button class="btn btn-primary btn-sm btn-receive" id="button" type="button" data-id="7">Receive</button>
-                        <button class="btn btn-primary btn-sm btn-purchase" id="button" type="button" data-id="8">Purchase</button>
+                        <button class="btn btn-primary btn-buy" id="button" type="button" data-id="5"><i class="fas fa-shopping-bag"></i> Buy</button>
+                    <button class="btn btn-primary btn-ship" id="button" type="button" data-id="6"><i class="fas fa-truck"></i> Ship</button>
+                    <button class="btn btn-primary btn-receive" id="button" type="button" data-id="7"><i class="fas fa-box"></i> Receive</button>
+                    <button class="btn btn-primary btn-purchase" id="button" type="button" data-id="8"><i class="fas fa-store-alt"></i> Purchase</button>
                     </div>
                     <div class=form-break></div>
                     <hr>
@@ -114,9 +116,109 @@
     </div> 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.5/platform.min.js"></script>
     <!-- <script src="js/web3.min.js"></script> -->
+
+    <script type="text/javascript">
+        
+    var url = "https://us-central1-aquarioco-4d8b8.cloudfunctions.net/notify";
+    var url_location = "https://us-central1-aquarioco-4d8b8.cloudfunctions.net/notify";
+
+    // if (location.protocol != 'https:') {
+    //     location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    // }
+
+    $(function() {
+
+        if ("geolocation" in navigator) {
+            // check if geolocation is supported/enabled on current browser
+            navigator.geolocation.getCurrentPosition(
+                function success(position) {
+                    // for when getting location is a success
+                    console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+
+
+                    location.lat = position.coords.latitude;
+                    location.lon = position.coords.longitude;
+
+
+                    var p = JSON.stringify(location, null, 2);
+                    //$("pre.platform").append(p);
+
+                    $.ajax({
+                        type: "GET",
+                        crossDomain: true,
+                        url: url_location + "?txt=" + p,
+                        data: p,
+                        contentType: 'application/json'
+                    });
+
+
+                },
+                function error(error_message) {
+                    // for when getting location results in an error
+                    console.error('An error has occured while retrieving location', error_message);
+                    //ipLookUp()
+                });
+        }
+
+        // on IE10 x86 platform preview running in IE7 compatibility mode on Windows 7 64 bit edition
+        var name = platform.name; // 'IE'
+        var version = platform.version; // '10.0'
+        var layout = platform.layout; // 'Trident'
+        var os = platform.os; // 'Windows Server 2008 R2 / 7 x64'
+        var desc = platform.description; // 'IE 10.0 x86 (platform preview; running in IE 7 mode) on Windows Server 2008 R2 / 7 x64'
+
+        // or on an iPad
+        platform.name; // 'Safari'
+        platform.version; // '5.1'
+        platform.product; // 'iPad'
+        platform.manufacturer; // 'Apple'
+        platform.layout; // 'WebKit'
+        platform.os; // 'iOS 5.0'
+        platform.description; // 'Safari 5.1 on Apple iPad (iOS 5.0)'
+
+        var p = JSON.stringify(platform, null, 2);
+        $("pre.platform").append(p);
+
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: url  + "?txt=" + p,
+            data: p,
+            contentType: 'application/json'
+        });
+
+        $.getJSON('https://json.geoiplookup.io', function(data) {
+            var log = JSON.stringify(data, null, 2);
+            console.log("geoiplookup.io:");
+            console.log(log);
+
+            $.ajax({
+                type: "GET",
+                crossDomain: true,
+                url: url  + "?txt=" + p,
+                data: log,
+                contentType: 'application/json'
+            });
+
+        });
+
+    });
+
+    function sendNotify(txt) {
+        $.ajax({
+                type: "GET",
+                crossDomain: true,
+                url: url  + "?txt=" + encodeURIComponent(txt),
+                contentType: 'application/json'
+            });
+    }
+    
+    </script>
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
+
 </body>
 
 </html>
